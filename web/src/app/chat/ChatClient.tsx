@@ -447,11 +447,22 @@ export default function ChatClient() {
               )}
             </button>
           </div>
-          <p className="text-xs text-slate-500 mt-2 text-center">
-            {messages.length > 0 && !limitReached && (
-              <>{Math.floor(messages.length / 2)}/{MAX_RESPONSES} respuestas usadas</>
-            )}
-          </p>
+          <div className="flex items-center justify-between mt-2 px-1">
+            <span className="text-xs text-slate-500">
+              {messages.length > 0 && !limitReached && (
+                <>{Math.floor(messages.length / 2)}/{MAX_RESPONSES} respuestas usadas</>
+              )}
+            </span>
+            <button
+              onClick={startNewChat}
+              className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-indigo-300 transition-colors group"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:rotate-90 transition-transform duration-200">
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              Nuevo Chat
+            </button>
+          </div>
         </div>
       </div>
     </div>
