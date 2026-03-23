@@ -74,21 +74,18 @@ export default function Home() {
       {/* Call to Action (Chat Button) */}
       <section className="z-10 mt-24 mb-12 text-center">
         <div className="inline-flex flex-col items-center">
-          <button 
-            disabled 
-            className="group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-full bg-slate-800/80 px-8 font-medium text-slate-400 border border-slate-700 transition-all cursor-not-allowed"
+          <Link
+            href="/chat"
+            className="group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-full bg-indigo-600/20 px-8 font-medium text-indigo-300 border border-indigo-500/30 transition-all hover:bg-indigo-600/30 hover:text-white hover:border-indigo-500/50"
           >
             <span className="flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"/></svg>
               Ir al Chat
             </span>
             <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-150%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(150%)]">
-              <div className="relative h-full w-8 bg-white/5" />
+              <div className="relative h-full w-8 bg-white/10" />
             </div>
-          </button>
-          <span className="mt-3 text-sm text-indigo-400 font-medium bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">
-            Módulo próximamente habilitado
-          </span>
+          </Link>
         </div>
       </section>
     </main>

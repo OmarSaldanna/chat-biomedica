@@ -1,0 +1,114 @@
+/* ── Chat-specific Animations ─────────────────────────────────────────────── */
+
+/* Typing indicator dots */
+@keyframes typing-bounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
+}
+
+.typing-dot {
+  animation: typing-bounce 1.4s ease-in-out infinite;
+}
+
+.typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* Message entrance animation */
+@keyframes message-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-enter {
+  animation: message-slide-in 0.3s ease-out;
+}
+
+/* Function calling chip pulse */
+@keyframes chip-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(129, 140, 248, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(129, 140, 248, 0);
+  }
+}
+
+.function-chip {
+  animation: chip-pulse 2s ease-in-out 1;
+}
+
+/* Custom scrollbar for chat area */
+.chat-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb {
+  background-color: rgb(51 65 85 / 0.5);
+  border-radius: 3px;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(71 85 105 / 0.7);
+}
+
+/* Limit reached banner animation */
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.limit-banner {
+  animation: fade-in-down 0.4s ease-out;
+}
+
+/* ── Markdown content styles ───────────────────────────────────────────────── */
+
+/* Ordered list items use the list-decimal from Tailwind,
+   but we override the custom li to use the native counter */
+.markdown-content ol li {
+  list-style: decimal;
+  display: list-item;
+  margin-left: 1.25rem;
+}
+
+.markdown-content ol li > span:first-child {
+  display: none; /* hide the bullet dot for ordered lists */
+}
+
+/* Unordered list spacing */
+.markdown-content ul {
+  padding-left: 0.25rem;
+}
+
+/* Code block overflow */
+.markdown-content pre {
+  overflow-x: auto;
+}
+
