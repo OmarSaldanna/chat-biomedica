@@ -1,4 +1,4 @@
-Código para PubChem
+# Código para PubChem
 import requests
 
 url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/aspirin/cids/JSON"
@@ -16,7 +16,7 @@ else:
 
 ------------
 
-Código para ChEMBL
+# Código para ChEMBL
 import requests
 
 url = "https://www.ebi.ac.uk/chembl/api/data/molecule/CHEMBL25.json"
@@ -34,7 +34,7 @@ else:
 
 ------------
 
-Código para Protein Data Bank
+# Código para Protein Data Bank
 import requests
 
 url = "https://data.rcsb.org/rest/v1/core/entry/4HHB"
@@ -52,7 +52,7 @@ else:
 
 ------------
 
-Código para UniProt
+# Código para UniProt
 import requests
 
 url = "https://rest.uniprot.org/uniprotkb/P04637.json"
@@ -70,7 +70,7 @@ else:
 
 ------------
 
-Código para GenBank
+# Código para GenBank
 import requests
 
 url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
