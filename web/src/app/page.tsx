@@ -53,11 +53,8 @@ export default function Home() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { title: 'PubChem', desc: 'Compuestos químicos, propiedades moleculares y bioensayos.', color: 'from-blue-500/20 to-blue-600/5' },
               { title: 'ChEMBL', desc: 'Compuestos bioactivos y datos de bioactividad experimental.', color: 'from-emerald-500/20 to-emerald-600/5' },
-              { title: 'Protein Data Bank (PDB)', desc: 'Estructuras tridimensionales de proteínas y macromoléculas biológicas.', color: 'from-orange-500/20 to-orange-600/5' },
               { title: 'UniProt', desc: 'Secuencias de proteínas y rigurosas anotaciones funcionales.', color: 'from-purple-500/20 to-purple-600/5' },
-              { title: 'GenBank', desc: 'Secuencias genéticas de ADN y ARN accesibles globalmente.', color: 'from-cyan-500/20 to-cyan-600/5' },
             ].map((db, idx) => (
               <div key={idx} className="glass-card p-6 rounded-xl hover:-translate-y-1 transition-transform duration-300 relative overflow-hidden">
                 <div className={`absolute inset-0 bg-gradient-to-br ${db.color} opacity-50`} />
