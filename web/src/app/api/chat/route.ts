@@ -55,27 +55,39 @@ export async function POST(request: NextRequest) {
       })),
     ];
 
-    // First call to OpenAI
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: fullMessages,
-      tools: toolDefinitions,
-      tool_choice: "auto",
-    });
-
-    const choice = response.choices[0];
-    let assistantMessage = choice.message;
+    // Tool calling loop — supports chained calls (e.g. search_proteins → get_protein_details)
+    const MAX_TOOL_ROUNDS = 3;
+    const conversationMessages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] =
+      [...fullMessages];
     const functionCalls: FunctionCallInfo[] = [];
 
-    // Handle tool calls (function calling loop)
-    if (assistantMessage.tool_calls && assistantMessage.tool_calls.length > 0) {
-      // Add the assistant's message (with tool_calls) to the conversation
-      const conversationMessages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] =
-        [...fullMessages, assistantMessage];
+    let assistantMessage!: OpenAI.Chat.Completions.ChatCompletionMessage;
+
+    for (let round = 0; round < MAX_TOOL_ROUNDS + 1; round++) {
+      const response = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: conversationMessages,
+        tools: toolDefinitions,
+        tool_choice: "auto",
+      });
+
+      assistantMessage = response.choices[0].message;
+
+      // If no tool calls, we have the final response
+      if (!assistantMessage.tool_calls || assistantMessage.tool_calls.length === 0) {
+        break;
+      }
+
+      // Safety: don't exceed max rounds
+      if (round >= MAX_TOOL_ROUNDS) {
+        break;
+      }
+
+      // Add assistant message (with tool_calls) to conversation
+      conversationMessages.push(assistantMessage);
 
       // Execute each tool call
       for (const toolCall of assistantMessage.tool_calls) {
-        // Only handle function tool calls (skip custom tool calls)
         if (toolCall.type !== "function") continue;
 
         const functionName = toolCall.function.name;
@@ -107,14 +119,6 @@ export async function POST(request: NextRequest) {
           content: JSON.stringify(result),
         });
       }
-
-      // Second call to OpenAI with tool results
-      const secondResponse = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
-        messages: conversationMessages,
-      });
-
-      assistantMessage = secondResponse.choices[0].message;
     }
 
     return NextResponse.json({

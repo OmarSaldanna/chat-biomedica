@@ -61,6 +61,23 @@ interface UniProtComment {
   texts?: Array<{
     value?: string;
   }>;
+  // For SUBCELLULAR LOCATION
+  subcellularLocations?: Array<{
+    location?: {
+      value?: string;
+    };
+  }>;
+  note?: {
+    texts?: Array<{
+      value?: string;
+    }>;
+  };
+  // For DISEASE
+  disease?: {
+    diseaseId?: string;
+    description?: string;
+    acronym?: string;
+  };
 }
 
 interface UniProtEntry {
@@ -157,26 +174,37 @@ export async function handler(args: {
       }
     }
 
-    // Extract subcellular location
+    // Extract subcellular location (uses subcellularLocations array, not texts)
     let subcellularLocation: string | null = null;
     if (data.comments) {
-      for (const comment of data.comments) {
-        if (comment.commentType === "SUBCELLULAR LOCATION" && comment.texts?.length) {
-          subcellularLocation = comment.texts[0].value || null;
-          break;
+      const locationComments = data.comments.filter(
+        (c) => c.commentType === "SUBCELLULAR LOCATION"
+      );
+      if (locationComments.length > 0) {
+        const locations = locationComments
+          .flatMap((c) => c.subcellularLocations || [])
+          .map((sl) => sl.location?.value)
+          .filter(Boolean);
+        if (locations.length > 0) {
+          // Remove duplicates and join
+          subcellularLocation = [...new Set(locations)].join(", ");
         }
       }
     }
 
-    // Extract involvement in disease
+    // Extract involvement in disease (uses disease object, not texts)
     let diseaseInfo: string | null = null;
     if (data.comments) {
       const diseaseComments = data.comments.filter(
-        (c) => c.commentType === "DISEASE" && c.texts?.length
+        (c) => c.commentType === "DISEASE" && c.disease
       );
       if (diseaseComments.length > 0) {
         diseaseInfo = diseaseComments
-          .map((c) => c.texts?.[0]?.value || "")
+          .map((c) => {
+            const name = c.disease?.diseaseId || "";
+            const desc = c.disease?.description || "";
+            return name ? `${name}${desc ? `: ${desc}` : ""}` : "";
+          })
           .filter(Boolean)
           .join(" | ");
       }

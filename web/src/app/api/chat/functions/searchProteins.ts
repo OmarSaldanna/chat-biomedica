@@ -16,12 +16,19 @@ export const definition: ChatCompletionFunctionTool = {
           type: "string",
           description:
             "Término de búsqueda: nombre de proteína, gen, función biológica o enfermedad. " +
-            "Ejemplos: 'p53', 'insulin', 'apoptosis', 'BRCA1', 'hemoglobin'.",
+            "Ejemplos: 'p53', 'insulin', 'apoptosis', 'BRCA1', 'hemoglobin'. " +
+            "IMPORTANTE: traduce siempre el término al inglés antes de buscar.",
         },
         limit: {
           type: "number",
           description:
             "Número máximo de resultados a devolver (1-10). Por defecto: 5.",
+        },
+        organism: {
+          type: "string",
+          description:
+            "Filtrar por organismo. Valores comunes: 'human' (defecto), 'mouse', 'rat', 'all'. " +
+            "Usa 'all' solo si el usuario pide explícitamente buscar en todos los organismos.",
         },
       },
       required: ["query"],
@@ -86,21 +93,48 @@ interface SearchProteinsResult {
   content: string;
 }
 
+// Map common organism names to UniProt taxonomy IDs
+const ORGANISM_MAP: Record<string, string> = {
+  human: "9606",
+  mouse: "10090",
+  rat: "10116",
+  zebrafish: "7955",
+  "e. coli": "83333",
+  yeast: "559292",
+  drosophila: "7227",
+  "c. elegans": "6239",
+};
+
 export async function handler(args: {
   query: string;
   limit?: number;
+  organism?: string;
 }): Promise<SearchProteinsResult> {
   try {
-    const { query, limit = 5 } = args;
+    const { query, limit = 5, organism = "human" } = args;
 
     // Clamp limit between 1 and 10
     const safeLimit = Math.max(1, Math.min(10, limit));
 
+    // Build the search query with filters for relevant results
+    let searchQuery = query;
+
+    // Add organism filter (default: human)
+    if (organism !== "all") {
+      const orgId = ORGANISM_MAP[organism.toLowerCase()] || ORGANISM_MAP["human"];
+      searchQuery += ` AND organism_id:${orgId}`;
+    }
+
+    // Filter to reviewed (Swiss-Prot) entries for higher quality results
+    searchQuery += " AND reviewed:true";
+
     // Build the UniProt search URL
     const url = new URL("https://rest.uniprot.org/uniprotkb/search");
-    url.searchParams.set("query", query);
+    url.searchParams.set("query", searchQuery);
     url.searchParams.set("format", "json");
     url.searchParams.set("size", String(safeLimit));
+    // Request only the fields we need to reduce payload
+    url.searchParams.set("fields", "accession,protein_name,gene_names,organism_name,annotation_score");
 
     const response = await fetch(url.toString(), {
       headers: {
