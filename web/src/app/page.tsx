@@ -55,6 +55,8 @@ export default function Home() {
             {[
               { title: 'ChEMBL', desc: 'Compuestos bioactivos y datos de bioactividad experimental.', color: 'from-emerald-500/20 to-emerald-600/5' },
               { title: 'UniProt', desc: 'Secuencias de proteínas y rigurosas anotaciones funcionales.', color: 'from-purple-500/20 to-purple-600/5' },
+              { title: 'Protein Data Bank', desc: 'Estructuras tridimensionales de macromoléculas biológicas determinadas experimentalmente.', color: 'from-sky-500/20 to-sky-600/5' },
+              { title: 'GenBank', desc: 'Secuencias de nucleótidos y su información bibliográfica y biológica asociada.', color: 'from-amber-500/20 to-amber-600/5' },
             ].map((db, idx) => (
               <div key={idx} className="glass-card p-6 rounded-xl hover:-translate-y-1 transition-transform duration-300 relative overflow-hidden">
                 <div className={`absolute inset-0 bg-gradient-to-br ${db.color} opacity-50`} />
