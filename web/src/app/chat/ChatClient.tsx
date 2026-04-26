@@ -303,23 +303,74 @@ export default function ChatClient() {
             </div>
             {/* Suggestion chips — only when no messages */}
             {messages.length === 0 && (
-              <div className="flex flex-wrap justify-center gap-2 pt-1">
-                {[
-                  "Propiedades del ibuprofeno",
-                  "¿Qué es la aspirina?",
-                  "Información del paracetamol",
-                ].map((suggestion) => (
-                  <button
-                    key={suggestion}
-                    onClick={() => {
-                      setInput(suggestion);
-                      inputRef.current?.focus();
-                    }}
-                    className="px-3 py-1.5 rounded-full text-xs text-slate-300 bg-slate-800/60 border border-slate-700/50 hover:bg-slate-700/60 hover:text-white transition-colors"
-                  >
-                    {suggestion}
-                  </button>
-                ))}
+              <div className="w-full max-w-2xl pt-2 space-y-3">
+                {/* ChEMBL — Fármacos */}
+                <div>
+                  <p className="text-xs text-slate-500 mb-1.5 text-left px-1">💊 Fármacos (ChEMBL)</p>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      "Propiedades del ibuprofeno",
+                      "¿Qué es la aspirina?",
+                      "Información del paracetamol",
+                    ].map((s) => (
+                      <button key={s} onClick={() => { setInput(s); inputRef.current?.focus(); }}
+                        className="px-3 py-1.5 rounded-full text-xs text-slate-300 bg-slate-800/60 border border-slate-700/50 hover:bg-slate-700/60 hover:text-white transition-colors">
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                {/* UniProt — Proteínas */}
+                <div>
+                  <p className="text-xs text-slate-500 mb-1.5 text-left px-1">🧬 Proteínas (UniProt)</p>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      "¿Qué hace la proteína p53?",
+                      "Busca proteínas relacionadas con apoptosis",
+                      "Detalles de la insulina humana",
+                    ].map((s) => (
+                      <button key={s} onClick={() => { setInput(s); inputRef.current?.focus(); }}
+                        className="px-3 py-1.5 rounded-full text-xs text-slate-300 bg-slate-800/60 border border-slate-700/50 hover:bg-slate-700/60 hover:text-white transition-colors">
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                {/* PDB — Estructuras */}
+                <div>
+                  <p className="text-xs text-slate-500 mb-1.5 text-left px-1">🔬 Estructuras 3D (PDB)</p>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      "¿Cuál es la resolución y el método experimental de la estructura de la hemoglobina humana?",
+                      "¿Quiénes son los autores y cuál es el artículo principal de la insulina humana?",
+                      "¿Quiénes publicaron la estructura de la proteína p53 y en qué año?",
+                      "¿Cuál es la publicación principal asociada a la estructura 2MNR?",
+                    ].map((s) => (
+                      <button key={s} onClick={() => { setInput(s); inputRef.current?.focus(); }}
+                        className="px-3 py-1.5 rounded-full text-xs text-slate-300 bg-slate-800/60 border border-slate-700/50 hover:bg-slate-700/60 hover:text-white transition-colors">
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                {/* GenBank — Secuencias */}
+                <div>
+                  <p className="text-xs text-slate-500 mb-1.5 text-left px-1">🧪 Secuencias genómicas (GenBank)</p>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      "¿Cuántas secuencias del gen BRCA1 existen en humanos?",
+                      "Dame ejemplos de secuencias del gen EGFR en humanos",
+                      "¿Cuántas secuencias existen para INS en humano vs ratón?",
+                      "¿Cuál es la longitud de las secuencias de TP53?",
+                      "Dame IDs de secuencias del gen MYC en humanos",
+                    ].map((s) => (
+                      <button key={s} onClick={() => { setInput(s); inputRef.current?.focus(); }}
+                        className="px-3 py-1.5 rounded-full text-xs text-slate-300 bg-slate-800/60 border border-slate-700/50 hover:bg-slate-700/60 hover:text-white transition-colors">
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
             )}
           </div>
